@@ -25,7 +25,7 @@ struct WeatherData {
     QString stationId;
     QDateTime timestamp;
     
-    // Aviation-specific data
+    // aviation data
     QString metar;
     QString taf;
     double altimeter;

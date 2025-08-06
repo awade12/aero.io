@@ -44,21 +44,17 @@ void WindCompass::paintEvent(QPaintEvent *event)
     painter.setViewport((width() - side) / 2, (height() - side) / 2, side, side);
     painter.setWindow(-90, -90, 180, 180);
     
-    // Minimal background - just a subtle gradient
     QRadialGradient bgGradient(0, 0, 85);
     bgGradient.setColorAt(0, QColor(58, 58, 58, 200));  // #3a3a3a
     bgGradient.setColorAt(1, QColor(43, 43, 43, 200));  // #2b2b2b
     painter.fillRect(-90, -90, 180, 180, QBrush(bgGradient));
     
-    // Single clean border
     QPen borderPen(QColor(85, 85, 85, 150), 1); // #555555
     painter.setPen(borderPen);
     painter.drawEllipse(-80, -80, 160, 160);
     
-    // Minimal compass markings - only cardinal directions
     painter.setPen(QPen(QColor(255, 255, 255, 120), 1));
     
-    // Cardinal directions only
     for (int i = 0; i < 360; i += 90) {
         painter.save();
         painter.rotate(i);
@@ -66,7 +62,6 @@ void WindCompass::paintEvent(QPaintEvent *event)
         painter.restore();
     }
     
-    // Clean cardinal direction labels
     QFont font = painter.font();
     font.setPointSize(12);
     font.setWeight(QFont::Medium);
@@ -78,7 +73,6 @@ void WindCompass::paintEvent(QPaintEvent *event)
     painter.drawText(-6, 75, "S");
     painter.drawText(-75, 6, "W");
     
-    // Clean, minimal wind arrow
     if (m_windSpeed > 0.1) {
         QColor arrowColor;
         if (m_windSpeed < 6.0) {
@@ -94,18 +88,15 @@ void WindCompass::paintEvent(QPaintEvent *event)
         painter.save();
         painter.rotate(m_windDirection);
         
-        // Simple, clean arrow
         QPen arrowPen(arrowColor, 3);
         painter.setPen(arrowPen);
         painter.setBrush(QBrush(arrowColor));
         
-        // Dynamic arrow length
         int arrowLength = qMin(60, (int)(m_windSpeed * 2 + 20));
         
-        // Main arrow line
         painter.drawLine(0, 0, 0, -arrowLength);
-        
-        // Simple arrowhead
+
+        // arrow head
         QPolygon arrowHead;
         arrowHead << QPoint(0, -arrowLength) 
                   << QPoint(-6, -arrowLength + 12) 
@@ -114,7 +105,7 @@ void WindCompass::paintEvent(QPaintEvent *event)
         
         painter.restore();
         
-        // Minimal gust indicator
+
         if (m_windGust > m_windSpeed + 2.0) {
             painter.save();
             painter.rotate(m_windDirection);
@@ -150,7 +141,6 @@ void WindWidget::setupUI()
     m_mainLayout->setSpacing(12);
     m_mainLayout->setContentsMargins(12, 12, 12, 12);
     
-    // Single clean container - no more group boxes for minimal look
     m_windDataGroup = new QGroupBox("", this);
     m_windDataGroup->setStyleSheet(
         "QGroupBox {"
@@ -166,17 +156,14 @@ void WindWidget::setupUI()
     mainLayout->setSpacing(25);
     mainLayout->setContentsMargins(20, 20, 20, 20);
     
-    // Wind Compass - centered and prominent
     m_windCompass = new WindCompass(this);
     m_windCompass->setMinimumSize(180, 180);
     m_windCompass->setMaximumSize(180, 180);
     mainLayout->addWidget(m_windCompass, 0, Qt::AlignCenter);
     
-    // Minimal data display - single column, clean typography
     auto *dataLayout = new QVBoxLayout();
     dataLayout->setSpacing(15);
     
-    // Wind speed - large and minimal
     m_windSpeedLabel = new QLabel("-- kts");
     m_windSpeedLabel->setStyleSheet(
         "QLabel {"
@@ -190,7 +177,6 @@ void WindWidget::setupUI()
     m_windSpeedLabel->setAlignment(Qt::AlignCenter);
     dataLayout->addWidget(m_windSpeedLabel);
     
-    // Wind strength - subtle but clear
     m_windStrengthLabel = new QLabel("--");
     m_windStrengthLabel->setStyleSheet(
         "QLabel {"
@@ -203,7 +189,6 @@ void WindWidget::setupUI()
     m_windStrengthLabel->setAlignment(Qt::AlignCenter);
     dataLayout->addWidget(m_windStrengthLabel);
     
-    // Direction - clean and readable
     m_windDirectionLabel = new QLabel("--");
     m_windDirectionLabel->setStyleSheet(
         "QLabel {"
@@ -218,7 +203,6 @@ void WindWidget::setupUI()
     m_windDirectionLabel->setAlignment(Qt::AlignCenter);
     dataLayout->addWidget(m_windDirectionLabel);
     
-    // Gusts - only show when present, minimal styling
     m_windGustLabel = new QLabel("");
     m_windGustLabel->setStyleSheet(
         "QLabel {"
@@ -236,7 +220,6 @@ void WindWidget::setupUI()
     
     m_mainLayout->addWidget(m_windDataGroup);
     
-    // Minimal analysis - single row, no cards
     m_windHistoryGroup = new QGroupBox("", this);
     m_windHistoryGroup->setStyleSheet(
         "QGroupBox {"
@@ -252,7 +235,6 @@ void WindWidget::setupUI()
     analysisLayout->setSpacing(25);
     analysisLayout->setContentsMargins(20, 15, 20, 15);
     
-    // Simple labels, no cards - just clean text
     auto *avgSection = new QVBoxLayout();
     auto *avgHeader = new QLabel("AVG");
     avgHeader->setStyleSheet("color: #888888; font-size: 10px; font-weight: bold;");
@@ -299,12 +281,10 @@ void WindWidget::setupUI()
 
 void WindWidget::updateWindData(const WeatherData &data)
 {
-    // Clean, minimal text formatting
     m_windSpeedLabel->setText(QString("%1 kts").arg(data.windSpeed, 0, 'f', 0));
     m_windDirectionLabel->setText(formatWindDirection(data.windDirection));
     m_windStrengthLabel->setText(getWindStrength(data.windSpeed));
     
-    // Only show gusts if they're significant (>2 kts above steady wind)
     if (data.windGust > data.windSpeed + 2.0) {
         m_windGustLabel->setText(QString("Gusts %1 kts").arg(data.windGust, 0, 'f', 0));
         m_windGustLabel->show();
@@ -312,7 +292,6 @@ void WindWidget::updateWindData(const WeatherData &data)
         m_windGustLabel->hide();
     }
     
-    // Update wind strength color
     QColor speedColor = getWindSpeedColor(data.windSpeed);
     QString strengthStyle = QString(
         "QLabel {"
@@ -323,10 +302,8 @@ void WindWidget::updateWindData(const WeatherData &data)
         "}").arg(speedColor.name());
     m_windStrengthLabel->setStyleSheet(strengthStyle);
     
-    // Update compass
     m_windCompass->setWindData(data.windSpeed, data.windDirection, data.windGust);
     
-    // History tracking
     m_windSpeedHistory.append(data.windSpeed);
     m_windGustHistory.append(data.windGust);
     
@@ -348,9 +325,8 @@ void WindWidget::updateWindData(const WeatherData &data)
             if (gust > maxGust) maxGust = gust;
         }
         
-        // Simplified display
         m_avgWindSpeedLabel->setText(QString("%1 kts").arg(avgSpeed, 0, 'f', 0));
-        m_maxWindSpeedLabel->setText(QString("%1 kts").arg(maxGust, 0, 'f', 0));
+        m_maxWindGustLabel->setText(QString("%1 kts").arg(maxGust, 0, 'f', 0));
         
         if (m_windSpeedHistory.size() > 5) {
             double recentAvg = 0.0;
