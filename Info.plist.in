@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDisplayName</key>
+    <string>@CMAKE_PROJECT_NAME@</string>
+    <key>CFBundleExecutable</key>
+    <string>@CMAKE_PROJECT_NAME@</string>
+    <key>CFBundleGetInfoString</key>
+    <string>DroneView Weather Dashboard @CMAKE_PROJECT_VERSION@</string>
+    <key>CFBundleIconFile</key>
+    <string>DroneView.icns</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.droneview.weatherdashboard</string>
+    <key>CFBundleName</key>
+    <string>@CMAKE_PROJECT_NAME@</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>@CMAKE_PROJECT_VERSION@</string>
+    <key>CFBundleSignature</key>
+    <string>DVWD</string>
+    <key>CFBundleVersion</key>
+    <string>@CMAKE_PROJECT_VERSION@</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>DroneView needs location access to provide local weather conditions and flight safety information for drone operations.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>DroneView uses your location to provide accurate local weather data for safe drone flight operations.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>DroneView needs location access to provide local weather conditions and flight safety information for drone operations.</string>
+    <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+    <dict>
+        <key>LocationAccuracyAuthorizationDescription</key>
+        <string>DroneView requires precise location data to provide accurate weather and flight safety information for your drone operations.</string>
+    </dict>
+    <key>LSMinimumSystemVersion</key>
+    <string>10.15</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSSupportsAutomaticGraphicsSwitching</key>
+    <true/>
+</dict>
+</plist>
